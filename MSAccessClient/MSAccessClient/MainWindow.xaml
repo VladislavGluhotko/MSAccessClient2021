@@ -1,0 +1,804 @@
+﻿<Window x:Class="MSAccessClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:local="clr-namespace:MSAccessClient"
+        mc:Ignorable="d"
+        Title="MSAccessClient" ResizeMode="NoResize" Height="680" Width="1200">
+
+    <Window.Resources>
+        <!-- Watermark default style for TextBox -->
+        <Style x:Key="MyWaterMarkStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Grid>
+                            <Border Background="White" BorderBrush="#FF7D8683" BorderThickness="1"/>
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="5,0,0,0" VerticalAlignment="Center" />
+                            <Label Margin="5,0,0,0" x:Name="WaterMarkLabel" Content="{TemplateBinding Tag}" VerticalAlignment="Center"
+                               Visibility="Collapsed" Foreground="Gray" FontFamily="Arial"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Text" Value=""/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Visibility" TargetName="WaterMarkLabel" Value="Visible"/>
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="DimGray"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <TabControl Margin="5,0,10,10">
+            <TabItem Header="Просмотр">
+                <Grid>
+                    <DataGrid x:Name="dg" SelectionMode="Single"  Height="546" VerticalAlignment="Top" Margin="10,6,9,0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Visibility="Hidden" IsReadOnly="True" Header="ID" Binding="{Binding ID}" Width="*" />
+                            <DataGridTextColumn Visibility="Visible" IsReadOnly="False" Header="ФамилияИО" Binding="{Binding ФамилияИО}" Width="100" />
+                            <DataGridTextColumn Visibility="Visible" IsReadOnly="False" Header="Возраст" Binding="{Binding Возраст}" Width="100" />
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="Пол" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Пол}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox Name ="dg_cmb000" DropDownClosed="Window_OnDataGridComboBoxDropDownClosed">
+                                            <ComboBoxItem Content="М"></ComboBoxItem>
+                                            <ComboBoxItem Content="Ж"></ComboBoxItem>
+                                            <ComboBoxItem Content="Нет данных"></ComboBoxItem>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="РегионВыпЭксп" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding РегионВыпЭксп}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox Name ="dg_cmb001" DropDownClosed="Window_OnDataGridComboBoxDropDownClosed">
+                                            <ComboBoxItem Content="1. Брест"></ComboBoxItem>
+                                            <ComboBoxItem Content="2. Витебск"></ComboBoxItem>
+                                            <ComboBoxItem Content="3. Гомель"></ComboBoxItem>
+                                            <ComboBoxItem Content="4. Гродно"></ComboBoxItem>
+                                            <ComboBoxItem Content="5. Минская обл"></ComboBoxItem>
+                                            <ComboBoxItem Content="6. Могилев"></ComboBoxItem>
+                                            <ComboBoxItem Content="7. Минск"></ComboBoxItem>
+                                            <ComboBoxItem Content="Нет данных"></ComboBoxItem>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ТипНасПунктаТравм" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ТипНасПунктаТравм}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox Name ="dg_cmb002" DropDownClosed="Window_OnDataGridComboBoxDropDownClosed">
+                                            <ComboBoxItem Content="Город"></ComboBoxItem>
+                                            <ComboBoxItem Content="Деревня, село, поселок"></ComboBoxItem>
+                                            <ComboBoxItem Content="Поселок городского типа"></ComboBoxItem>
+                                            <ComboBoxItem Content="Агрогородок"></ComboBoxItem>
+                                            <ComboBoxItem Content="Другое"></ComboBoxItem>
+                                            <ComboBoxItem Content="Нет данных"></ComboBoxItem>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ДатаТравмы" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ДатаТравмы, StringFormat=dd.MM.yyyy}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <DatePicker SelectedDate="{Binding ДатаТравмы, StringFormat=dd.MM.yyyy}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ДатаОбрЗаПом" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ДатаОбрЗаПом, StringFormat=dd.MM.yyyy}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <DatePicker SelectedDate="{Binding ДатаОбрЗаПом, StringFormat=dd.MM.yyyy}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Visibility="Visible" IsReadOnly="False" Header="СрокСМомТравмДоОбрЗаПом" Binding="{Binding СрокСМомТравмДоОбрЗаПом}" Width="100" />
+                            <DataGridTextColumn Visibility="Visible" IsReadOnly="False" Header="ДлитЛечСтационар" Binding="{Binding ДлитЛечСтационар}" Width="100" />
+                            <DataGridTextColumn Visibility="Visible" IsReadOnly="False" Header="ДлитЛечАмбулаторно" Binding="{Binding ДлитЛечАмбулаторно}" Width="100" />
+                            <DataGridTextColumn Visibility="Visible" IsReadOnly="False" Header="ДлитЛечРеабилитация" Binding="{Binding ДлитЛечРеабилитация}" Width="100" />
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ВидТравмы" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ВидТравмы}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox Name ="dg_cmb003" DropDownClosed="Window_OnDataGridComboBoxDropDownClosed">
+                                            <ComboBoxItem Content="Транспортная"></ComboBoxItem>
+                                            <ComboBoxItem Content="Падение на пл-ти"></ComboBoxItem>
+                                            <ComboBoxItem Content="Падение с высоты"></ComboBoxItem>
+                                            <ComboBoxItem Content="Ныряние"></ComboBoxItem>
+                                            <ComboBoxItem Content="Удар в голову"></ComboBoxItem>
+                                            <ComboBoxItem Content="Прямая уд. нагр."></ComboBoxItem>
+                                            <ComboBoxItem Content="Другое"></ComboBoxItem>
+                                            <ComboBoxItem Content="Нет данных"></ComboBoxItem>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="БольШея" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb000" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding БольШея, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="БольГолова" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb001" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding БольГолова, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="БольТуловище" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb002" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding БольТуловище, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="БольКонечности" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb003" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding БольКонечности, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="Головокружение" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb004" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding Головокружение, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ТошнотаРвота" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb005" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding ТошнотаРвота, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="СлабостьОбщая" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb006" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding СлабостьОбщая, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="СлабостьВерхКон" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb007" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding СлабостьВерхКон, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="СлабостьНижКон" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb008" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding СлабостьНижКон, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ОнемениеВерхКон" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb009" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding ОнемениеВерхКон, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ОнемениеНижКон" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb010" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding ОнемениеНижКон, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ЧувМурашекВерхКон" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb011" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding ЧувМурашекВерхКон, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ЧувМурашекНижКон" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb012" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding ЧувМурашекНижКон, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ЧувМурашекТуловище" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb013" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding ЧувМурашекТуловище, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="НФТО (суб)" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb014" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding НФТО1, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="НаружТелПоврГолова" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb015" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding НаружТелПоврГолова, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="НаружТелПоврШея" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb016" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding НаружТелПоврШея, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="НаружТелПоврТуловище" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb017" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding НаружТелПоврТуловище, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="НаружТелПоврВерхКон" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb018" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding НаружТелПоврВерхКон, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="НаружТелПоврНижКон" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb019" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding НаружТелПоврНижКон, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="НарушЧувГолова" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb020" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding НарушЧувГолова, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="НарушЧувШея" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb021" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding НарушЧувШея, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="НарушЧувТуловище" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb022" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding НарушЧувТуловище, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="НарушЧувВерхКон" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb023" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding НарушЧувВерхКон, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="НарушЧувНижКон" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb024" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding НарушЧувНижКон, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="УменьшСилыВерхКон" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb025" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding УменьшСилыВерхКон, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="УменьшСилыНижКон" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb026" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding УменьшСилыНижКон, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="НФТО (об)" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb027" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding НФТО2, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="МышДефансШеи" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb028" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding МышДефансШеи, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="МРТвып" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb029" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding МРТвып, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="МРТподтв" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb030" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding МРТподтв, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="МСКТвып" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb031" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding МСКТвып, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="МСКТподтв" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb032" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding МСКТподтв, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="РЕНТГЕНВып" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb033" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding РЕНТГЕНВып, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="РЕНТГЕНподтв" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb034" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding РЕНТГЕНподтв, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ЭМГвып" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb035" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding ЭМГвып, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ЭМГподтв" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb036" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding ЭМГподтв, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="УЗИвып" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb037" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding УЗИвып, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="УЗИподтв" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb038" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding УЗИподтв, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ЭЭГвып" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb039" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding ЭЭГвып, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ЭЭГподтв" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb040" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding ЭЭГподтв, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="РВГвып" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb041" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding РВГвып, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="РВГподтв" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb042" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding РВГподтв, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ДРУГОЕвып" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb043" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding ДРУГОЕвып, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="ДРУГОЕподтв" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Name="dg_chb044" Click="Window_OnDataGridCheckBoxClicked"  IsChecked="{Binding ДРУГОЕподтв, Mode=TwoWay}"></CheckBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Visibility="Visible" IsReadOnly="False" Header="Алкоголь" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Алкоголь}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                                <DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox Name ="dg_cmb004" DropDownClosed="Window_OnDataGridComboBoxDropDownClosed">
+                                            <ComboBoxItem Content="0"></ComboBoxItem>
+                                            <ComboBoxItem Content="0.01 - 0.29 ‰"></ComboBoxItem>
+                                            <ComboBoxItem Content="0.3 - 1.49 ‰"></ComboBoxItem>
+                                            <ComboBoxItem Content="1.5 - 2.49 ‰"></ComboBoxItem>
+                                            <ComboBoxItem Content="2.5 - 2.99 ‰"></ComboBoxItem>
+                                            <ComboBoxItem Content="3.0 - 4.99 ‰"></ComboBoxItem>
+                                            <ComboBoxItem Content="5.0 ‰ и больше"></ComboBoxItem>
+                                            <ComboBoxItem Content="Нет данных"></ComboBoxItem>
+                                        </ComboBox>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellEditingTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Button Content="Выбрать БД" HorizontalAlignment="Left" Height="34" Margin="1039,569,0,0" VerticalAlignment="Top" Width="124" Click="ButtonClick_SelectDB" />
+                    <Button Content="Загрузить" HorizontalAlignment="Left" Height="34" Margin="10,569,0,0" VerticalAlignment="Top" Width="124" Click="ButtonClick_LoadData" />
+                    <Button Content="Сохранить" HorizontalAlignment="Left" Height="34" Margin="896,569,0,0" VerticalAlignment="Top" Width="124" Click="ButtonClick_SaveChanges" RenderTransformOrigin="1.424,-0.382" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Форма">
+                <Canvas>
+                    <TextBlock TextAlignment="Left" Text="Общие данные" Canvas.Left="38" Canvas.Top="7" Width="256" Height="27"/>
+                    <TextBox x:Name="tbx_fio" Style="{StaticResource MyWaterMarkStyle}" Tag="Фамилия И.О." Canvas.Left="36" Canvas.Top="33" Width="258" Height="29" />
+                    <TextBlock TextAlignment="Left" Text="Возраст" Canvas.Left="38" Canvas.Top="73" Height="26" Width="126"/>
+                    <TextBox x:Name="tbx_age" Style="{StaticResource MyWaterMarkStyle}" Tag="лет" Canvas.Left="170" Canvas.Top="73" Width="124" Height="26" />
+                    <TextBlock TextAlignment="Left" Text="Пол" Canvas.Left="38" Canvas.Top="112" Height="26" Width="126"/>
+                    <ComboBox x:Name="cmb_gender" Canvas.Left="170" Canvas.Top="112" Width="124" Height="27"></ComboBox>
+                    <TextBlock TextAlignment="Left" Text="Регион вып. эксп." Canvas.Left="36" Canvas.Top="152" Height="27" Width="126"/>
+                    <ComboBox x:Name="cmb_regexpert" Canvas.Left="170" Canvas.Top="153" RenderTransformOrigin="2.768,8.273" Height="27" Width="124"></ComboBox>
+                    <TextBlock TextAlignment="Left" Text="Тип нас. п. травмир. " Canvas.Left="36" Canvas.Top="195" Height="27" Width="126"/>
+                    <ComboBox x:Name="cmb_regtypeexpert" Canvas.Left="170" Canvas.Top="195" Height="27" Width="124"></ComboBox>
+
+
+                    <TextBlock TextAlignment="Left" Text="Анамнез травмирования" Canvas.Left="38" Canvas.Top="273" Height="27" Width="256"/>
+                    <TextBlock TextAlignment="Left" Text="Дата травмы " Canvas.Left="38" Canvas.Top="307" Height="27" Width="126"/>
+                    <DatePicker x:Name="dpk_injurydate" SelectedDate="{Binding QQQQQQQQ, StringFormat=dd.MM.yyyy}" Canvas.Left="170" Canvas.Top="306" Height="27" Width="124">
+                        <DatePicker.Resources>
+                            <Style TargetType="DatePickerTextBox">
+                                <Setter Property="Text" Value="Выбрать дату"/>
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+                    <TextBlock TextAlignment="Left" Text="Дата обр. за медп. " Canvas.Left="38" Canvas.Top="344" Height="27" Width="126"/>
+                    <DatePicker x:Name="dpk_datemed" SelectedDate="{Binding QQQQQQQQ, StringFormat=dd.MM.yyyy}" Canvas.Left="170" Canvas.Top="344" Height="27" Width="124">
+                        <DatePicker.Resources>
+                            <Style TargetType="DatePickerTextBox">
+                                <Setter Property="Text" Value="Выбрать дату"/>
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+                    <TextBlock TextAlignment="Left" Text="Срок с мом. травмы" Canvas.Left="38" Canvas.Top="380" Height="27" Width="124"/>
+                    <TextBox x:Name="tbx_daysbeforemed" Style="{StaticResource MyWaterMarkStyle}" Tag="дней" Canvas.Left="170" Canvas.Top="380" Height="27" Width="124"/>
+                    <TextBlock TextAlignment="Left" Text="Длит. лечения" Canvas.Left="38" Canvas.Top="426" Height="26" Width="87"/>
+                    <TextBlock TextAlignment="Left" Text="Стационар" Canvas.Left="127" Canvas.Top="426" Height="26" Width="80"/>
+                    <TextBox x:Name="tbx_daystreat000" Style="{StaticResource MyWaterMarkStyle}" Tag="дней" Canvas.Left="212" Canvas.Top="425" Height="27" Width="81"/>
+                    <TextBlock TextAlignment="Left" Text="Амбулаторно" Canvas.Left="127" Canvas.Top="457" Height="26" Width="80"/>
+                    <TextBox x:Name="tbx_daystreat001" Style="{StaticResource MyWaterMarkStyle}" Tag="дней" Canvas.Left="212" Canvas.Top="457" Height="27" Width="81"/>
+                    <TextBlock TextAlignment="Left" Text="Реабилитация" Canvas.Left="127" Canvas.Top="488" Height="26" Width="80"/>
+                    <TextBox x:Name="tbx_daystreat002" Style="{StaticResource MyWaterMarkStyle}" Tag="дней" Canvas.Left="212" Canvas.Top="489" Height="27" Width="81"/>
+
+
+
+
+                    <TextBlock TextAlignment="Left" Text="Вид травмы" Canvas.Left="36" Canvas.Top="533" Height="27" Width="124"/>
+                    <ComboBox x:Name="cmb_injurytype" Canvas.Left="170" Canvas.Top="533" Width="124" Height="27"></ComboBox>
+
+
+                    <TextBlock TextAlignment="Left" Text="Субъективные данные" Canvas.Left="354" Canvas.Top="7" Height="27" Width="188"/>
+                    <TextBlock TextAlignment="Left" Text="Боль" Canvas.Left="354" Canvas.Top="32" Height="26" Width="92"/>
+                    <TextBlock TextAlignment="Left" Text="Шея" Canvas.Left="446" Canvas.Top="32" Height="22" Width="74"/>
+                    <CheckBox x:Name="chb_pain000" Canvas.Left="524" Canvas.Top="33" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Голова" Canvas.Left="446" Canvas.Top="58" Height="22" Width="74"/>
+                    <CheckBox x:Name="chb_pain001" Canvas.Left="524" Canvas.Top="60" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Туловище" Canvas.Left="446" Canvas.Top="85" Height="22" Width="74"/>
+                    <CheckBox x:Name="chb_pain002" Canvas.Left="524" Canvas.Top="86" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Конечности" Canvas.Left="446" Canvas.Top="112" Width="74" Height="22"/>
+                    <CheckBox x:Name="chb_pain003" Canvas.Left="524" Canvas.Top="113" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Головокружение" Canvas.Left="354" Canvas.Top="146" Width="200" Height="26"/>
+                    <CheckBox x:Name="chb_dizziness" Canvas.Left="524" Canvas.Top="147" Height="26" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Тошнота/рвота" Canvas.Left="354" Canvas.Top="177" Height="26" Width="200"/>
+                    <CheckBox x:Name="chb_nausea" Canvas.Left="524" Canvas.Top="178" Height="26" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Слабость общая" Canvas.Left="354" Canvas.Top="208" Height="26" Width="200"/>
+                    <CheckBox x:Name="chb_fulltiredness" Canvas.Left="524" Canvas.Top="209" Height="26" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Слабость" Canvas.Left="354" Canvas.Top="250" Height="27" Width="92"/>
+                    <TextBlock TextAlignment="Left" Text="Верх. кон." Canvas.Left="446" Canvas.Top="251" Height="22" Width="73"/>
+                    <CheckBox x:Name="chb_tiredness000" Canvas.Left="524" Canvas.Top="252" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Нижн. кон." Canvas.Left="446" Canvas.Top="278" Height="22" Width="73"/>
+                    <CheckBox x:Name="chb_tiredness001" Canvas.Left="524" Canvas.Top="279" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Онемение" Canvas.Left="354" Canvas.Top="311" Height="27" Width="92"/>
+                    <TextBlock TextAlignment="Left" Text="Верх. кон." Canvas.Left="446" Canvas.Top="312" Height="22" Width="73"/>
+                    <CheckBox x:Name="chb_numbness000" Canvas.Left="524" Canvas.Top="313" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Нижн. кон." Canvas.Left="446" Canvas.Top="339" Height="22" Width="73"/>
+                    <CheckBox x:Name="chb_numbness001" Canvas.Left="524" Canvas.Top="340" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Чувств. мураш." Canvas.Left="354" Canvas.Top="377" Height="27" Width="92"/>
+                    <TextBlock TextAlignment="Left" Text="Верх. кон." Canvas.Left="446" Canvas.Top="376" Height="22" Width="73"/>
+                    <CheckBox x:Name="chb_goosebumps000" Canvas.Left="524" Canvas.Top="377" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Нижн. кон." Canvas.Left="446" Canvas.Top="403" Height="22" Width="73"/>
+                    <CheckBox x:Name="chb_goosebumps001" Canvas.Left="524" Canvas.Top="404" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Туловище." Canvas.Left="446" Canvas.Top="430" Height="22" Width="73"/>
+                    <CheckBox x:Name="chb_goosebumps002" Canvas.Left="524" Canvas.Top="430" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Canvas.Left="354" Canvas.Top="472" Height="26" Width="160"><Run Text="НФТО"/><Run Text=" (суб)"/></TextBlock>
+                    <CheckBox x:Name="chb_nfto1" Canvas.Left="524" Canvas.Top="472" Height="26" Width="18"/>
+
+                    <TextBlock TextAlignment="Left" Text="Объективные данные" Canvas.Left="610" Canvas.Top="7" Height="27" Width="234"/>
+                    <TextBlock TextAlignment="Left" Text="Наруж. тел. повр." Canvas.Left="610" Canvas.Top="32" Height="26" Width="98"/>
+                    <TextBlock TextAlignment="Left" Text="Голова" Canvas.Left="740" Canvas.Top="33" Height="22" Width="78"/>
+                    <CheckBox x:Name="chb_bodydmg000" Canvas.Left="826" Canvas.Top="33" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Шея" Canvas.Left="740" Canvas.Top="59" Height="22" Width="78"/>
+                    <CheckBox x:Name="chb_bodydmg001" Canvas.Left="826" Canvas.Top="61" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Туловище" Canvas.Left="740" Canvas.Top="86" Width="78" Height="22"/>
+                    <CheckBox x:Name="chb_bodydmg002" Canvas.Left="826" Canvas.Top="86" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Верх. кон." Canvas.Left="740" Canvas.Top="113" Height="22" Width="78"/>
+                    <CheckBox x:Name="chb_bodydmg003" Canvas.Left="826" Canvas.Top="114" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Нижн. кон." Canvas.Left="740" Canvas.Top="140" Height="22" Width="78"/>
+                    <CheckBox x:Name="chb_bodydmg004" Canvas.Left="826" Canvas.Top="140" Height="22" Width="18"/>
+
+                    <TextBlock TextAlignment="Left" Text="Нарушение чувств-ти" Canvas.Left="610" Canvas.Top="178" Height="26" Width="126"/>
+                    <TextBlock TextAlignment="Left" Text="Голова" Canvas.Left="742" Canvas.Top="178" Height="22" Width="76"/>
+                    <CheckBox x:Name="chb_sensivitydmg000" Canvas.Left="826" Canvas.Top="178" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Шея" Canvas.Left="742" Canvas.Top="205" Height="22" Width="76"/>
+                    <CheckBox x:Name="chb_sensivitydmg001" Canvas.Left="826" Canvas.Top="205" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Туловище" Canvas.Left="742" Canvas.Top="232" Height="22" Width="76"/>
+                    <CheckBox x:Name="chb_sensivitydmg002" Canvas.Left="826" Canvas.Top="232" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Верх. кон." Canvas.Left="742" Canvas.Top="259" Height="22" Width="76"/>
+                    <CheckBox x:Name="chb_sensivitydmg003" Canvas.Left="826" Canvas.Top="259" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Нижн. кон." Canvas.Left="742" Canvas.Top="286" Height="22" Width="76"/>
+                    <CheckBox x:Name="chb_sensivitydmg004" Canvas.Left="826" Canvas.Top="282" Height="22" Width="18"/>
+
+                    <TextBlock TextAlignment="Left" Text="Уменьш. силы в кон." Canvas.Left="610" Canvas.Top="330" Height="26" Width="126"/>
+                    <TextBlock TextAlignment="Left" Text="Верх. кон." Canvas.Left="742" Canvas.Top="330" Height="22" Width="76"/>
+                    <CheckBox x:Name="chb_limbsweakness000" Canvas.Left="826" Canvas.Top="330" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Нижн. кон." Canvas.Left="742" Canvas.Top="357" Height="22" Width="76"/>
+                    <CheckBox x:Name="chb_limbsweakness001" Canvas.Left="826" Canvas.Top="357" Height="22" Width="18"/>
+
+                    <TextBlock TextAlignment="Left" Canvas.Left="610" Canvas.Top="400" Height="26" Width="208"><Run Text="НФТО"/><Run Text=" (об)"/></TextBlock>
+                    <CheckBox x:Name="chb_nfto2" Canvas.Left="826" Canvas.Top="400" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Мыш. дефанс шеи" Canvas.Left="610" Canvas.Top="430" Height="26" Width="208"/>
+                    <CheckBox x:Name="chb_neckdmg" Canvas.Left="826" Canvas.Top="430" Height="22" Width="18"/>
+
+                    <TextBlock TextAlignment="Left" Canvas.Left="927" Canvas.Top="7" Height="27" Width="225"><Run Text="Инструментальные методы иссл"/><Run Text="."/></TextBlock>
+                    <TextBlock TextAlignment="Left" Text="выполн." Canvas.Left="996" Canvas.Top="34" Height="22"/>
+                    <TextBlock TextAlignment="Left" Text="подтв." Canvas.Left="1083" Canvas.Top="33" Height="22"/>
+                    <TextBlock TextAlignment="Left" Text="МРТ" Canvas.Left="927" Canvas.Top="60" Height="22" Width="78"/>
+                    <CheckBox x:Name="chb_mrt000" Canvas.Left="1010" Canvas.Top="60" Height="22" Width="18"/>
+                    <CheckBox x:Name="chb_mrt001" Canvas.Left="1092" Canvas.Top="58" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="МСКТ" Canvas.Left="927" Canvas.Top="91" Height="22" Width="78"/>
+                    <CheckBox x:Name="chb_mskt000" Canvas.Left="1010" Canvas.Top="92" Height="22" Width="18"/>
+                    <CheckBox x:Name="chb_mskt001" Canvas.Left="1092" Canvas.Top="92" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Рентген" Canvas.Left="927" Canvas.Top="122" Height="22" Width="78"/>
+                    <CheckBox x:Name="chb_xray000" Canvas.Left="1010" Canvas.Top="123" Height="22" Width="18"/>
+                    <CheckBox x:Name="chb_xray001" Canvas.Left="1092" Canvas.Top="123" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="ЭМГ" Canvas.Left="927" Canvas.Top="152" Height="22" Width="78"/>
+                    <CheckBox x:Name="chb_emg000" Canvas.Left="1010" Canvas.Top="153" Height="22" Width="18"/>
+                    <CheckBox x:Name="chb_emg001" Canvas.Left="1092" Canvas.Top="153" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="УЗИ" Canvas.Left="927" Canvas.Top="182" Height="22" Width="78"/>
+                    <CheckBox x:Name="chb_uzi000" Canvas.Left="1010" Canvas.Top="183" Height="22" Width="18"/>
+                    <CheckBox x:Name="chb_uzi001" Canvas.Left="1092" Canvas.Top="183" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="ЭЭГ" Canvas.Left="927" Canvas.Top="214" Height="22" Width="78"/>
+                    <CheckBox x:Name="chb_eeg000" Canvas.Left="1010" Canvas.Top="215" Height="22" Width="18"/>
+                    <CheckBox x:Name="chb_eeg001" Canvas.Left="1092" Canvas.Top="213" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="РВГ" Canvas.Left="927" Canvas.Top="247" Height="22" Width="78"/>
+                    <CheckBox x:Name="chb_rvg000" Canvas.Left="1010" Canvas.Top="248" Height="22" Width="18"/>
+                    <CheckBox x:Name="chb_rvg001" Canvas.Left="1092" Canvas.Top="248" Height="22" Width="18"/>
+                    <TextBlock TextAlignment="Left" Text="Другое" Canvas.Left="927" Canvas.Top="278" Height="22" Width="78"/>
+                    <CheckBox x:Name="chb_drugoi000" Canvas.Left="1010" Canvas.Top="279" Height="22" Width="18"/>
+                    <CheckBox x:Name="chb_drugoi001" Canvas.Left="1092" Canvas.Top="278" Height="22" Width="18"/>
+
+                    <TextBlock TextAlignment="Left" Text="Алкоголь" Canvas.Left="918" Canvas.Top="377" Height="26" Width="104"/>
+                    <ComboBox x:Name="cmb_alcohol" Canvas.Left="1027" Canvas.Top="377" Width="101" Height="26"></ComboBox>
+
+                    <Button Content="Добавить" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="86" Click="ButtonClick_Add" Canvas.Left="1077" Canvas.Top="571" />
+                    <Button Content="Очистить форму" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="104" Click="ButtonClick_ClearForm" Canvas.Left="948" Canvas.Top="571" />
+                </Canvas>
+            </TabItem>
+            <TabItem Header="Запрос">
+                <Canvas Margin="0,-1,0,1">
+                    <DataGrid AutoGeneratingColumn="Window_OnDataGrid2AutoGeneratingColumn" x:Name="dg2" SelectionMode="Single" IsReadOnly="True" Height="291" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="1153" Canvas.Left="10" Canvas.Top="10"/>
+                    <StackPanel Name="sp1" Width="165" HorizontalAlignment="Left"  Grid.Column="1" Height="252" Canvas.Left="726" Canvas.Top="361">
+                        <!-- <Menu Name="mnuMain" Height="30" DockPanel.Dock="Top"></Menu> -->
+                    </StackPanel>
+                    <StackPanel Name="sp1_chb" Grid.Column="1" Height="252" Width="87" Canvas.Left="885" Canvas.Top="361"/>
+                    <TextBlock Text="Найдено:" Height="22" TextAlignment="Left" Grid.ColumnSpan="2" Canvas.Left="899" Canvas.Top="319" Width="63"/>
+                    <TextBlock x:Name="tbx_result" Height="22" TextAlignment="Left" Grid.ColumnSpan="2" Canvas.Left="967" Canvas.Top="319" Width="63"/>
+                    <Button Content="Посм. парам. запроса" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top" Width="127" Click="ButtonClick_ShowFormParams" Grid.Column="1" Canvas.Left="1021" Canvas.Top="501" />
+                    <Button Content="Вып. запрос" HorizontalAlignment="Left" Height="33" VerticalAlignment="Top" Width="127" Click="ButtonClick_SelectQuery" Grid.Column="1" Canvas.Left="1021" Canvas.Top="562" />
+
+                    <!-- ОБЩИЕ СВЕДЕНИЯ -->
+                    <!-- Поиск по полу -->
+                    <TextBlock Text="Пол" Height="22" TextAlignment="Left" Grid.ColumnSpan="2" Canvas.Left="36" Canvas.Top="319" Width="82"/>
+                    <CheckBox x:Name="sp1_chb_gender" IsChecked="False" Click="Window_OnSP1CheckBox1Clicked" Height="22" Width="35" Grid.Column="1" Canvas.Left="149" Canvas.Top="319" />
+
+                    <!-- Поиск по ФИО -->
+                    <TextBlock Text="Поиск ФИО" Height="22" TextAlignment="Left" Grid.ColumnSpan="2" Canvas.Left="36" Canvas.Top="347" Width="82"/>
+                    <CheckBox x:Name="sp1_chb_fio" IsChecked="False" Click="Window_OnSP1CheckBox2Clicked" Height="22" Width="35" Grid.Column="1" Canvas.Left="149" Canvas.Top="347" />
+
+                    <!-- Поиск по возрасту -->
+                    <TextBlock Text="Возраст" Height="22" TextAlignment="Left" Grid.ColumnSpan="2" Canvas.Left="36" Canvas.Top="374" Width="82"/>
+                    <CheckBox x:Name="sp1_chb_age" IsChecked="False" Click="Window_OnSP1CheckBox3Clicked" Height="22" Width="35" Grid.Column="1" Canvas.Left="149" Canvas.Top="374" />
+
+                    <!-- Поиск по региону -->
+                    <TextBlock Text="Рег. вып. эксп." Height="22" TextAlignment="Left" Grid.ColumnSpan="2" Canvas.Left="36" Canvas.Top="402" Width="82"/>
+                    <CheckBox x:Name="sp1_chb_regexpert" IsChecked="False" Click="Window_OnSP1CheckBox4Clicked" Height="22" Width="35"  Grid.Column="1" Canvas.Left="149" Canvas.Top="401" />
+
+                    <!-- Поиск по типу населенного пункта -->
+                    <TextBlock Text="Тип нас. п." Height="22" TextAlignment="Left" Grid.ColumnSpan="2" Canvas.Left="36" Canvas.Top="429" Width="82"/>
+                    <CheckBox x:Name="sp1_chb_regtypeexpert" IsChecked="False" Click="Window_OnSP1CheckBox5Clicked" Height="22" Width="35" Grid.Column="1" Canvas.Left="149" Canvas.Top="429" />
+
+                    <!-- АНАМНЕЗ ТРАВМИРОВАНИЯ -->
+                    <!-- Поиск по дате травмы -->
+                    <TextBlock Text="Дата травмы" Height="22" TextAlignment="Left" Grid.ColumnSpan="2" Canvas.Left="33" Canvas.Top="465" Width="106"/>
+                    <CheckBox x:Name="sp1_chb_injurydate" IsChecked="False" Click="Window_OnSP1CheckBox6Clicked" Height="22" Width="35" Canvas.Left="149" Canvas.Top="465"/>
+
+                    <!-- Поиск по дате обращения за медпомощью -->
+                    <TextBlock Text="Дата обр. мед." Height="22" TextAlignment="Left" Canvas.Left="33" Canvas.Top="493" Width="106" />
+                    <CheckBox x:Name="sp1_chb_datemed" IsChecked="False" Click="Window_OnSP1CheckBox7Clicked" Height="22" Width="35" Canvas.Left="149" Canvas.Top="493" />
+
+                    <!-- Поиск по сроку с мом. травмы до мом. обр. за медпомощью -->
+                    <TextBlock Text="Срок до обр. мед." Height="22" TextAlignment="Left" Canvas.Left="33" Canvas.Top="520" Width="106" />
+                    <CheckBox x:Name="sp1_chb_daysbeforemed" IsChecked="False" Click="Window_OnSP1CheckBox8Clicked" Height="22" Width="35" Canvas.Left="149" Canvas.Top="520" />
+
+                    <!-- Поиск по длительности лечения -->
+                    <TextBlock Height="22" TextAlignment="Left" Canvas.Left="200" Canvas.Top="319" Width="122" ><Run Text="Длит. леч"/><Run Text="."/><Run Text=" стационар"/></TextBlock>
+                    <CheckBox x:Name="sp1_chb_daystreat000" IsChecked="False" Click="Window_OnSP1CheckBox9Clicked" Height="22" Width="35" Canvas.Left="327" Canvas.Top="319" />
+                    <TextBlock Height="22" TextAlignment="Left" Canvas.Left="248" Canvas.Top="346" Width="74" Text="амбулаторн." />
+                    <CheckBox x:Name="sp1_chb_daystreat001" IsChecked="False" Click="Window_OnSP1CheckBox10Clicked" Height="22" Width="35" Canvas.Left="327" Canvas.Top="347" />
+                    <TextBlock Height="22" TextAlignment="Left" Canvas.Left="263" Canvas.Top="374" Width="58" Text="реабилит." />
+                    <CheckBox x:Name="sp1_chb_daystreat002" IsChecked="False" Click="Window_OnSP1CheckBox11Clicked" Height="22" Width="35" Canvas.Left="327" Canvas.Top="375" />
+                    <!-- Поиск по виду травмы -->
+                    <TextBlock Text="Вид травмы" Height="22" TextAlignment="Left" Canvas.Left="33" Canvas.Top="556" Width="101" />
+                    <CheckBox x:Name="sp1_chb_injurytype" IsChecked="False" Click="Window_OnSP1CheckBox12Clicked" Height="22" Width="35" Canvas.Left="149" Canvas.Top="556" />
+
+                    <!-- СУБЪЕКТИВНЫЕ ДАННЫЕ -->
+                    <!-- Поиск по боли -->
+                    <TextBlock Text="Боль" Height="22" TextAlignment="Left" Canvas.Left="200" Canvas.Top="419" Width="121" />
+                    <CheckBox x:Name="sp1_chb_pain" IsChecked="False" Click="Window_OnSP1CheckBox13Clicked" Height="22" Width="35" Canvas.Left="326" Canvas.Top="419" />
+
+                    <!-- Поиск по головокружению -->
+                    <TextBlock Text="Головокружение" Height="22" TextAlignment="Left" Canvas.Left="200" Canvas.Top="447" Width="121" />
+                    <CheckBox x:Name="sp1_chb_dizziness" IsChecked="False" Click="Window_OnSP1CheckBox14Clicked" Height="22" Width="35" Canvas.Left="326" Canvas.Top="447" />
+
+                    <!-- Поиск по тошноте и рвоте -->
+                    <TextBlock Text="Тошн./рвота" Height="22" TextAlignment="Left" Canvas.Left="200" Canvas.Top="474" Width="121" />
+                    <CheckBox x:Name="sp1_chb_nausea" IsChecked="False" Click="Window_OnSP1CheckBox15Clicked" Height="22" Width="35" Canvas.Left="326" Canvas.Top="474" />
+
+                    <!-- Поиск по общ. слабости -->
+                    <TextBlock Text="Общ. слабость" Height="22" TextAlignment="Left" Canvas.Left="200" Canvas.Top="502" Width="122"/>
+                    <CheckBox x:Name="sp1_chb_fulltiredness" IsChecked="False" Click="Window_OnSP1CheckBox16Clicked" Height="22" Width="35" Canvas.Left="326" Canvas.Top="501" />
+
+                    <!-- Поиск по слабости -->
+                    <TextBlock Text="Слабость" Height="22" TextAlignment="Left" Canvas.Left="200" Canvas.Top="529" Width="122"/>
+                    <CheckBox x:Name="sp1_chb_tiredness" IsChecked="False" Click="Window_OnSP1CheckBox17Clicked" Height="22" Width="35" Canvas.Left="326" Canvas.Top="529" />
+
+                    <!-- Поиск по онемению -->
+                    <TextBlock Text="Онемение" Height="22" TextAlignment="Left" Canvas.Left="200" Canvas.Top="556" Width="122" />
+                    <CheckBox x:Name="sp1_chb_numbness" IsChecked="False" Click="Window_OnSP1CheckBox18Clicked" Height="22" Width="35" Canvas.Left="327" Canvas.Top="556" />
+
+                    <!-- Поиск по чув. мурашек -->
+                    <TextBlock Text="Чув. мурашек" Height="22" TextAlignment="Left" Canvas.Left="382" Canvas.Top="334" Width="101" />
+                    <CheckBox x:Name="sp1_chb_goosebumps" IsChecked="False" Click="Window_OnSP1CheckBox19Clicked" Height="22" Width="35" Canvas.Left="487" Canvas.Top="334" />
+
+                    <!-- Поиск по нфто1 -->
+                    <TextBlock Text="НФТО (суб)" Height="22" TextAlignment="Left" Canvas.Left="382" Canvas.Top="361" Width="100" />
+                    <CheckBox x:Name="sp1_chb_nfto1" IsChecked="False" Click="Window_OnSP1CheckBox20Clicked" Height="22" Width="35" Canvas.Left="487" Canvas.Top="361" />
+
+                    <!-- ОЪЕКТИВНЫЕ ДАННЫЕ -->
+                    <!-- Поиск по телесным повреждениям -->
+                    <TextBlock Text="Нар. тел. повр." Height="22" TextAlignment="Left" Canvas.Left="385" Canvas.Top="411" Width="98" />
+                    <CheckBox x:Name="sp1_chb_bodydmg" IsChecked="False" Click="Window_OnSP1CheckBox21Clicked" Height="22" Width="35" Canvas.Left="487" Canvas.Top="411" />
+
+                    <!-- Поиск по нарушениям чувствительности -->
+                    <TextBlock Text="Наруш. чувст." Height="22" TextAlignment="Left" Canvas.Left="385" Canvas.Top="439" Width="98"/>
+                    <CheckBox x:Name="sp1_chb_sensivitydmg" IsChecked="False" Click="Window_OnSP1CheckBox22Clicked" Height="22" Width="35" Canvas.Left="487" Canvas.Top="439" />
+
+                    <!-- Поиск по уменьш. силы в кон. -->
+                    <TextBlock Text="Ум. силы в кон." Height="22" TextAlignment="Left" Canvas.Left="385" Canvas.Top="466" Width="98" />
+                    <CheckBox x:Name="sp1_chb_limbsweakness" IsChecked="False" Click="Window_OnSP1CheckBox23Clicked" Height="22" Width="35" Canvas.Left="487" Canvas.Top="465" />
+
+                    <!-- Поиск по НФТО2 -->
+                    <TextBlock Text="НФТО (об)" Height="22" TextAlignment="Left" Canvas.Left="385" Canvas.Top="494" Width="98" />
+                    <CheckBox x:Name="sp1_chb_nfto2" IsChecked="False" Click="Window_OnSP1CheckBox24Clicked" Height="22" Width="35" Canvas.Left="487" Canvas.Top="493"/>
+
+                    <!-- Поиск по мышечному дефансу шеи. -->
+                    <TextBlock Text="Мыш. деф. шеи" Height="22" TextAlignment="Left" Canvas.Left="385" Canvas.Top="521" Width="98" />
+                    <CheckBox x:Name="sp1_chb_neckdmg" IsChecked="False" Click="Window_OnSP1CheckBox25Clicked" Height="22" Width="35" Canvas.Left="487" Canvas.Top="521" />
+
+                    <!-- ИНСТРУМЕНТАЛЬНЫЕ МЕТОДЫ ИССЛЕДОВАНИЯ -->
+                    <!-- Поиск по МРТ -->
+                    <TextBlock Text="МРТ" Height="22" TextAlignment="Left" Canvas.Left="557" Canvas.Top="346" Width="95" />
+                    <CheckBox x:Name="sp1_chb_mrt" IsChecked="False" Click="Window_OnSP1CheckBox26Clicked" Height="22" Width="35" Canvas.Left="657" Canvas.Top="347"/>
+
+                    <!-- Поиск по МСКТ -->
+                    <TextBlock Text="МСКТ" Height="22" TextAlignment="Left" Canvas.Left="557" Canvas.Top="374" Width="95" />
+                    <CheckBox x:Name="sp1_chb_mskt" IsChecked="False" Click="Window_OnSP1CheckBox27Clicked" Height="22" Width="35" Canvas.Left="657" Canvas.Top="375" />
+
+                    <!-- Поиск по рентген -->
+                    <TextBlock Text="Рентген" Height="22" TextAlignment="Left" Canvas.Left="557" Canvas.Top="401" Width="95" />
+                    <CheckBox x:Name="sp1_chb_xray" IsChecked="False" Click="Window_OnSP1CheckBox28Clicked" Height="22" Width="35" Canvas.Left="657" Canvas.Top="401" />
+
+                    <!-- Поиск по ЭМГ -->
+                    <TextBlock Text="ЭМГ" Height="22" TextAlignment="Left" Canvas.Left="557" Canvas.Top="428" Width="95" />
+                    <CheckBox x:Name="sp1_chb_emg" IsChecked="False" Click="Window_OnSP1CheckBox29Clicked" Height="22" Width="35" Canvas.Left="657" Canvas.Top="429" />
+
+                    <!-- Поиск по УЗИ -->
+                    <TextBlock Text="УЗИ" Height="22" TextAlignment="Left" Canvas.Left="557" Canvas.Top="456" Width="95" />
+                    <CheckBox x:Name="sp1_chb_uzi" IsChecked="False" Click="Window_OnSP1CheckBox30Clicked" Height="22" Width="35" Canvas.Left="657" Canvas.Top="456" />
+
+                    <!-- Поиск по ЭЭГ -->
+                    <TextBlock Text="ЭЭГ" Height="22" TextAlignment="Left" Canvas.Left="557" Canvas.Top="483" Width="95" />
+                    <CheckBox x:Name="sp1_chb_eeg" IsChecked="False" Click="Window_OnSP1CheckBox31Clicked" Height="22" Width="35" Canvas.Left="657" Canvas.Top="483" />
+
+                    <!-- Поиск по РВГ -->
+                    <TextBlock Text="РВГ" Height="22" TextAlignment="Left" Canvas.Left="557" Canvas.Top="510" Width="95"/>
+                    <CheckBox x:Name="sp1_chb_rvg" IsChecked="False" Click="Window_OnSP1CheckBox32Clicked" Height="22" Width="35" Canvas.Left="657" Canvas.Top="511"/>
+
+                    <!-- Поиск по другому методу -->
+                    <TextBlock Text="Другой метод" Height="22" TextAlignment="Left" Canvas.Left="557" Canvas.Top="537" Width="95" />
+                    <CheckBox x:Name="sp1_chb_drugoi" IsChecked="False" Click="Window_OnSP1CheckBox33Clicked" Height="22" Width="35" Canvas.Left="657" Canvas.Top="537" />
+
+                    <!-- АЛКОГОЛЬ -->
+                    <!-- Поиск по алкоголю-->
+                    <TextBlock Text="Алкоголь" Height="22" TextAlignment="Left" Canvas.Left="385" Canvas.Top="575" Width="98" />
+                    <CheckBox x:Name="sp1_chb_alcohol" IsChecked="False" Click="Window_OnSP1CheckBox34Clicked" Height="22" Width="35" Canvas.Left="487" Canvas.Top="575" />
+
+                </Canvas>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

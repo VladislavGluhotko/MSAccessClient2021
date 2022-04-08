@@ -1,0 +1,57 @@
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\bin\Debug\MSAccessClient.exe.config
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\bin\Debug\MSAccessClient.exe
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\bin\Debug\MSAccessClient.pdb
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.csprojResolveAssemblyReference.cache
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\obj\Debug\MainWindow.g.cs
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\obj\Debug\App.g.cs
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient_MarkupCompile.cache
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient_MarkupCompile.lref
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\obj\Debug\MainWindow.baml
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.g.resources
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.Properties.Resources.resources
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.csproj.GenerateResource.Cache
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.exe
+c:\users\vg\documents\visual studio 2015\Projects\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.pdb
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\bin\Debug\MSAccessClient.exe.config
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\bin\Debug\MSAccessClient.exe
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\bin\Debug\MSAccessClient.pdb
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.csprojResolveAssemblyReference.cache
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\obj\Debug\MainWindow.g.cs
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\obj\Debug\App.g.cs
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient_MarkupCompile.cache
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient_MarkupCompile.lref
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\obj\Debug\MainWindow.baml
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.g.resources
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.Properties.Resources.resources
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.csproj.GenerateResource.Cache
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.exe
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд6\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.pdb
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\bin\Debug\MSAccessClient.exe.config
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\bin\Debug\MSAccessClient.exe
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\bin\Debug\MSAccessClient.pdb
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.csproj.AssemblyReference.cache
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\obj\Debug\MainWindow.g.cs
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\obj\Debug\App.g.cs
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient_MarkupCompile.cache
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient_MarkupCompile.lref
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\obj\Debug\MainWindow.baml
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.g.resources
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.Properties.Resources.resources
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.csproj.GenerateResource.cache
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.csproj.CoreCompileInputs.cache
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.exe
+C:\Users\VG\OneDrive\Desktop\VS vlad\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.pdb
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\bin\Debug\MSAccessClient.exe.config
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.exe
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.pdb
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\bin\Debug\MSAccessClient.exe
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\bin\Debug\MSAccessClient.pdb
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.csprojResolveAssemblyReference.cache
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\obj\Debug\MainWindow.g.cs
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\obj\Debug\App.g.cs
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient_MarkupCompile.cache
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient_MarkupCompile.lref
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\obj\Debug\MainWindow.baml
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.g.resources
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.Properties.Resources.resources
+C:\Users\VG\Documents\Visual Studio 2015\Projects\MSAccessClient - билды\билд16\MSAccessClient\MSAccessClient\obj\Debug\MSAccessClient.csproj.GenerateResource.Cache
